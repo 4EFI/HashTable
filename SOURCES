@@ -6,8 +6,6 @@ SRC =   src/main.cpp
 
 # already compiled objects
 
-SFML_LIBS = -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
-
 LIBS = $(wildcard ./src/build/*.o) ./IndList/lib/list.o
 
 CC = g++
