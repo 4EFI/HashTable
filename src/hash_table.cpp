@@ -38,3 +38,24 @@ int HashTableDtor( HashTable* hash_table )
 }
 
 //-----------------------------------------------------------------------------
+
+int HashTablePushWord( HashTable* hash_table, Elem_t elem, size_t (*hash_function)( Elem_t ) )
+{
+    size_t hash = hash_function( elem );
+    size_t size = hash_table->size;
+
+    int i = hash % size;
+
+    ListPushBack( &hash_table->arr[ i ], elem );
+    
+    return i;
+}
+
+//-----------------------------------------------------------------------------
+
+size_t GetHash( Elem_t elem )
+{    
+    return 1;
+}
+
+//-----------------------------------------------------------------------------

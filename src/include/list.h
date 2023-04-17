@@ -7,7 +7,7 @@
 
 static const int MaxStrLen = 255;
 
-static const Elem_t ListPoison = ( Elem_t )0x5E32DEAD;
+static const Elem_t ListPoison = NULL;
 
 extern const char* FileListDumpName;
 extern FILE* FileListDump;
