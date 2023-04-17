@@ -8,7 +8,7 @@ OBJ     = $(subst src,src/build, $(OBJ_TMP))
 #compiling
                                              
 link : $(OBJ) 
-	$(CC) $(IFLAGS) $(LFLAGS) $(CFLAGS) $^ -o $(OUTPUT_FILE_NAME) $(SFML_LIBS)
+	$(CC) $(IFLAGS) $(LFLAGS) $(CFLAGS) $^ -o $(OUTPUT_FILE_NAME) $(LIBS)
 
 src/build/%.o : src/%.cpp  	
 	echo  $(@D)
@@ -16,4 +16,4 @@ src/build/%.o : src/%.cpp
 	$(CC) $(IFLAGS) $(CFLAGS) $(FFLAGS) -c $^ -o $@	
 
 clear :
-	rm   -f ./src/build/*.o     
+	rm   -f ./src/build/*.o       

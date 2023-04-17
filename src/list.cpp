@@ -6,7 +6,6 @@
 #include <stdarg.h>
 
 #include "list.h" 
-#include "LOG.h" 
 
 //-----------------------------------------------------------------------------
 
@@ -50,20 +49,20 @@ int ListDtor( List* list )
 {
     if( list == NULL ) return 0;
 
-    list->coeffResize = ListPoison;
-    list->free        = ListPoison;
+    list->coeffResize = 0;
+    list->free        = 0;
 
     free( list->nodes );
     list->nodes = NULL;
 
-    list->size = ListPoison;
+    list->size = 0;
 
     return 1;
 }
 
 //-----------------------------------------------------------------------------
 
-int PrepareListNodeArr( ListNode arr['ded'], int size )
+int PrepareListNodeArr( ListNode arr[], int size )
 {
     if( arr == NULL ) return 0;
 
@@ -104,7 +103,7 @@ int PrintListNodeArr( ListNode arr[], int size )
 
     for( int i = 0; i < size; i++ )
     {
-        printf( "| %3d | %11d | %4d | %4d |\n", i, arr[i].elem, arr[i].next, arr[i].prev );    
+        printf( "| %3d | %11s | %4d | %4d |\n", i, arr[i].elem, arr[i].next, arr[i].prev );    
     }
 
     printf( "+-----+-------------+------+------+\n" );
@@ -142,7 +141,7 @@ int GraphVizListNodeArr( ListNode arr[], int size, FILE* tempFile )
     {
         // Create node 
         fprintf( tempFile, "node%d[ shape = record, style = \"filled\", fillcolor = \"%s\", " 
-                           "label = \"<p> prev = %d | <d> data[%d] \\n %d | <n> next = %d\" ];\n", 
+                           "label = \"<p> prev = %d | <d> data[%d] \\n %s | <n> next = %d\" ];\n", 
                             i, arr[i].prev == -1 ? "lightgreen" : "#B0F0F0", 
                                arr[i].prev, i, arr[i].elem, arr[i].next );
     }
@@ -216,7 +215,7 @@ int ListDump( List* list, int typeDump, const char* str, ... )
 {
     if( list == NULL ) return 0;
 
-    va_list   arg = {0};
+    va_list   arg = {};
     va_start( arg, str );
 
     if/* */( typeDump == TypeListDump::CONSOLE )
@@ -270,7 +269,7 @@ int ListResize( List* list )
 
     int numResize = list->capacity;
 
-    if( list->size <= size_t( (list->capacity - 1) / (2*list->coeffResize) ) )
+    if( size_t( list->size ) <= size_t( (list->capacity - 1) / (2*list->coeffResize) ) )
     {
         numResize /= list->coeffResize;
     }
@@ -366,8 +365,8 @@ Elem_t ListRemove( List* list, int pos )
 
     Elem_t elem = list->nodes[pos].elem;
 
-    list->nodes[prevTemp].next = nextTemp;
-    list->nodes[nextTemp].prev = prevTemp;
+    list->nodes[prevTemp].next = int( nextTemp );
+    list->nodes[nextTemp].prev = int( prevTemp );
 
     list->nodes[pos].prev = -1;
     list->nodes[pos].elem = 0;
