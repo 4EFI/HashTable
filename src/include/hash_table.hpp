@@ -12,16 +12,21 @@ struct HashTable
 {
     List*  arr;
     size_t size;
+
+    size_t (*hash_function)( Elem_t );
 };
 
 //-----------------------------------------------------------------------------
 
-size_t GetHash( Elem_t elem );
+size_t GetConstHash( Elem_t elem );
 
 int HashTableCtor( HashTable* hash_table, int size );
 int HashTableDtor( HashTable* hash_table );
 
-int HashTablePushWord( HashTable* hash_table, Elem_t elem, size_t (*hash_function)( Elem_t ) = GetHash );
+int HashTableSetHashFunction( HashTable* hash_table, size_t (*hash_function)( Elem_t ) );
+
+size_t HashTablePushWord( HashTable* hash_table, Elem_t elem );
+size_t HashTableFindWord( HashTable* hash_table, Elem_t elem );
 
 
 //-----------------------------------------------------------------------------
