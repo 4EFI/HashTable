@@ -10,7 +10,7 @@
 int main()
 {
     HashTable hash_table = {};
-    HashTableCtor( &hash_table, 1001 ); 
+    HashTableCtor( &hash_table, 1000 ); 
 
     HashTableSetHashFunction( &hash_table, GetConstHash );
 
