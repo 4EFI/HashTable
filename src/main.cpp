@@ -8,11 +8,9 @@
 int main()
 {
     HashTable hash_table = {};
-    HashTableCtor( &hash_table, 97 ); 
+    HashTableCtor( &hash_table, 1003 ); 
 
-    int i = HashTablePushWord( &hash_table, "Vlad" );
-
-    ListDump( &hash_table.arr[i], GRAPH_VIZ, "%d: ", i );
+    // ListDump( &hash_table.arr[1], GRAPH_VIZ, "%d: ", 1 );
 
     HashTableDtor( &hash_table );
 }
