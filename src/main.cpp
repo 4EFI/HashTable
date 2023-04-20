@@ -25,7 +25,7 @@ int main()
     FILE* output_file = fopen( "res/output_const.csv", "w" );
     HashTableMakeCSV( &hash_table, output_file );
 
-    // ListDump( &hash_table.arr[1], GRAPH_VIZ, "%d: ", 1 );
+    ListDump( &hash_table.arr[0], GRAPH_VIZ, "%d: ", 1 );
 
     HashTableDtor( &hash_table );
 }
