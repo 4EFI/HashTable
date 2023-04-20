@@ -23,7 +23,9 @@ size_t GetConstHash( Elem_t elem );
 int HashTableCtor( HashTable* hash_table, int size );
 int HashTableDtor( HashTable* hash_table );
 
-int HashTableAddText( HashTable* hash_table, const char* text );
+int HashTableLoadText( HashTable* hash_table, const char* text );
+
+int HashTableMakeCSV( HashTable* hash_table, FILE* output_file );
 
 int HashTableSetHashFunction( HashTable* hash_table, size_t (*hash_function)( Elem_t ) );
 

@@ -23,7 +23,7 @@ int HashTableCtor( HashTable* hash_table, int size )
   
     for( int i = 0; i < size; i++ )
     {
-        ListCtor( &hash_table->arr[i], 1 );
+        ListCtor( &hash_table->arr[i], 2 );
     }      
     
     return 1;
@@ -42,7 +42,7 @@ int HashTableDtor( HashTable* hash_table )
 
 //-----------------------------------------------------------------------------
 
-int HashTableAddText( HashTable* hash_table, const char* text )
+int HashTableLoadText( HashTable* hash_table, const char* text )
 {
     while( true )
     {
@@ -59,9 +59,25 @@ int HashTableAddText( HashTable* hash_table, const char* text )
         int num_read = 0;
         sscanf( text, "%[a-zA-Z]%n", word, &num_read );
 
-        text += num_read;
-
         if( num_read == 0 ) return 1;
+
+        text += num_read;
+        if( !HashTableFindWord( hash_table, word ) )
+        {
+            HashTablePushWord( hash_table, word );
+        }
+    }
+    
+    return 1;
+}
+
+//-----------------------------------------------------------------------------
+
+int HashTableMakeCSV( HashTable* hash_table, FILE* output_file )
+{
+    for( size_t i = 0; i < hash_table->size; i++ )
+    {
+        fprintf( output_file, "%d ", hash_table->arr[i].size );
     }
     
     return 1;
@@ -86,7 +102,7 @@ size_t HashTablePushWord( HashTable* hash_table, Elem_t elem )
     size_t i = hash % size;
 
     ListPushBack( &hash_table->arr[ i ], elem );
-    
+
     return i;
 }
 

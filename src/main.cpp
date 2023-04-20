@@ -20,9 +20,10 @@ int main()
     char* text = NULL;
     ReadAllFile( input_file, &text );
 
-    HashTableAddText( &hash_table, text );
+    HashTableLoadText( &hash_table, text );
 
-    printf( "%ld\n", HashTableFindWord( &hash_table, "Vlad" ) );
+    FILE* output_file = fopen( "res/output_const.csv", "w" );
+    HashTableMakeCSV( &hash_table, output_file );
 
     // ListDump( &hash_table.arr[1], GRAPH_VIZ, "%d: ", 1 );
 
