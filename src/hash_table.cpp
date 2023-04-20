@@ -42,8 +42,28 @@ int HashTableDtor( HashTable* hash_table )
 
 //-----------------------------------------------------------------------------
 
-int HashTableAddText()
+int HashTableAddText( HashTable* hash_table, const char* text )
 {
+    while( true )
+    {
+        char skip[256] = "";
+        char* word = ( char* )calloc( 256, sizeof( char ) );
+
+        // skip not letter
+        int num_skip = 0;
+        sscanf( text, "%[^a-zA-Z]%n", skip, &num_skip );
+        
+        text += num_skip;
+
+        // scanf word from text
+        int num_read = 0;
+        sscanf( text, "%[a-zA-Z]%n", word, &num_read );
+
+        text += num_read;
+
+        if( num_read == 0 ) return 1;
+    }
+    
     return 1;
 }
 
@@ -105,10 +125,6 @@ size_t GetConstHash( Elem_t elem )
 
 
 // File Functions
-
-long int GetFileSizeFromStat( FILE* file );
-long int ReadAllFile        ( FILE* file, char** str );
-
 //-----------------------------------------------------------------------------
 
 long int GetFileSizeFromStat( FILE* file ) 

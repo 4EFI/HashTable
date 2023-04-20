@@ -10,13 +10,19 @@
 int main()
 {
     HashTable hash_table = {};
-    HashTableCtor( &hash_table, 103 ); 
+    HashTableCtor( &hash_table, 1001 ); 
 
     HashTableSetHashFunction( &hash_table, GetConstHash );
 
-    HashTablePushWord( &hash_table, "Vlad" );
+    FILE* input_file = fopen( "res/hamlet.txt", "rb" );
+    if(  !input_file ) { printf( "Error open file...\n" ); return -1; } 
+    
+    char* text = NULL;
+    ReadAllFile( input_file, &text );
 
-    printf( "%d\n", HashTableFindWord( &hash_table, "Vlad" ) );
+    HashTableAddText( &hash_table, text );
+
+    printf( "%ld\n", HashTableFindWord( &hash_table, "Vlad" ) );
 
     // ListDump( &hash_table.arr[1], GRAPH_VIZ, "%d: ", 1 );
 

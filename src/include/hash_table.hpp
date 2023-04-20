@@ -30,6 +30,10 @@ int HashTableSetHashFunction( HashTable* hash_table, size_t (*hash_function)( El
 size_t HashTablePushWord( HashTable* hash_table, Elem_t elem );
 size_t HashTableFindWord( HashTable* hash_table, Elem_t elem );
 
+//-----------------------------------------------------------------------------
+
+long int GetFileSizeFromStat( FILE* file );
+long int ReadAllFile        ( FILE* file, char** str );
 
 //-----------------------------------------------------------------------------
 
