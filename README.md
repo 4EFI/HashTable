@@ -32,3 +32,10 @@ size_t GetConstHash( Elem_t elem )
 ```
 
 <p style="text-align: center"><img src=res/bar_const.png width="550px"/></p>
+
+26362
+1102
+3612
+34
+8 rol
+7 ror
