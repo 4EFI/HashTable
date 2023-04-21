@@ -31,4 +31,4 @@ size_t GetConstHash( Elem_t elem )
 }
 ```
 
-<p style="text-align: center"><img src=res/bar_const.png width="450px"/></p>
+<p style="text-align: center"><img src=res/bar_const.png width="550px"/></p>

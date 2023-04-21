@@ -1,10 +1,10 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-fig = plt.figure( figsize = (12, 8) )
+fig = plt.figure( figsize = (6, 4) )
 ax = fig.add_subplot()
 
-post_file_name = "ror"
+post_file_name = "const"
 
 data = []
 
@@ -13,10 +13,10 @@ with open( "res/output_" + post_file_name + ".csv", "r" ) as f:
 
 x = [i for i in range( len( data ) )]
 
-xmax = 1000
+xmax = 200
 
 plt.xlim  ( 0, xmax )
-plt.xticks( [i for i in range( 0, xmax + 1, 50 )] )
+plt.xticks( [i for i in range( 0, xmax + 1, 100 )] )
 plt.xlabel( "Индекс списка" )
 plt.ylabel( "Количество элементов" )
 
