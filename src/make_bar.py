@@ -1,19 +1,28 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-fig = plt.figure(figsize = (6, 4))
+fig = plt.figure( figsize = (12, 8) )
 ax = fig.add_subplot()
 
-y = []
+post_file_name = "const"
+
 data = []
 
-with open( "res/output_const.csv", "r" ) as f:
-    data = list(map(int, f.readline().split()))
+with open( "res/output_" + post_file_name + ".csv", "r" ) as f:
+    data = list( map( int, f.readline().split() ) )
 
-for i in range(len(data)):
-    for j in range(data[i]):
-        y.append(i)
-ax.hist( y, 100, range = (0,1000) )
+x = [i for i in range( len( data ) )]
 
-fig.savefig('res/const_graph.png')
+xmax = 100
+
+plt.xlim  ( 0, xmax )
+plt.xticks( [i for i in range( 0, xmax + 1, 5 )] )
+plt.xlabel( "Индекс списка" )
+plt.ylabel( "Количество элементов" )
+
+ax.bar( x, data )
+
+fig.savefig( "res/bar_" + post_file_name + ".png" )
+
+plt.grid()
 plt.show()
