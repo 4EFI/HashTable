@@ -21,6 +21,7 @@ struct HashTable
 size_t GetConstHash     ( Elem_t elem );
 size_t GetFirstAsciiHash( Elem_t elem );
 size_t GetLenWordHash   ( Elem_t elem );
+size_t GetSumAsciiHash  ( Elem_t elem );
 
 int HashTableCtor( HashTable* hash_table, int size );
 int HashTableDtor( HashTable* hash_table );
