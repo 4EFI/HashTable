@@ -169,6 +169,57 @@ size_t GetSumAsciiHash( Elem_t elem )
 
 //-----------------------------------------------------------------------------
 
+size_t GetRolHash( Elem_t elem )
+{
+    size_t hash  = 0;
+
+    for( size_t i = 0; ; i++ )
+    {
+        if( !elem[i] ) break;
+
+        hash = ROL( hash, 1 ) ^ elem[i];
+    }
+
+    return hash;
+}
+
+//-----------------------------------------------------------------------------
+
+size_t GetRorHash( Elem_t elem )
+{
+    size_t hash  = 0;
+
+    for( size_t i = 0; ; i++ )
+    {
+        if( !elem[i] ) break;
+
+        hash = ROR( hash, 1 ) ^ elem[i];
+    }
+
+    return hash;
+}
+
+
+//-----------------------------------------------------------------------------
+
+
+// Other functions
+//-----------------------------------------------------------------------------
+
+size_t ROL( size_t num, size_t shift )
+{
+    return ( num << shift ) | ( num >> ( sizeof( size_t ) - shift ) );
+}
+
+//-----------------------------------------------------------------------------
+
+size_t ROR( size_t num, size_t shift )
+{
+    return ( num >> shift ) | ( num << ( sizeof( size_t ) - shift ) );
+}
+
+//-----------------------------------------------------------------------------
+
 
 // File Functions
 //-----------------------------------------------------------------------------

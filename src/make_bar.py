@@ -4,7 +4,7 @@ import numpy as np
 fig = plt.figure( figsize = (12, 8) )
 ax = fig.add_subplot()
 
-post_file_name = "sum_ascii"
+post_file_name = "ror"
 
 data = []
 
