@@ -199,6 +199,44 @@ size_t GetRorHash( Elem_t elem )
     return hash;
 }
 
+//-----------------------------------------------------------------------------
+
+size_t GetBKDRHash( Elem_t elem )
+{
+   size_t seed = 31; /* 31 131 1313 13131 131313 etc.. */
+   size_t hash = 0;
+
+   for( size_t i = 0; ; i++ )
+   {
+        if( !elem[i] ) break;
+        
+        hash = ( hash * seed ) + ( elem[i] );
+   }
+
+   return hash;
+}
+
+//-----------------------------------------------------------------------------
+
+size_t GetCrc32Hash( Elem_t elem ) 
+{
+    size_t crc  = 0xFFFFFFFF; 
+    size_t mask = 0;
+
+    for( size_t i = 0; ; i++ )
+    {
+        if( !elem[i] ) break;
+        
+        crc = crc ^ elem[i];
+
+        for( size_t j = 0; j < 8; j++ )     // Do 8 times
+        {    
+            mask = -( crc &  1 );
+            crc  =  ( crc >> 1 ) ^ ( 0xEDB88320 & mask );
+        }
+    }
+    return ~crc;
+}
 
 //-----------------------------------------------------------------------------
 
