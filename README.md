@@ -67,6 +67,8 @@ size_t GetLenWordHash( Elem_t elem )
 
 ### 4. Sum ASCII hash
 
+Возвращает сумму ASCII кодов всех символов слова. 
+
 ```C++
 size_t GetSumAsciiHash( Elem_t elem )
 {
@@ -137,6 +139,8 @@ size_t GetRorHash( Elem_t elem )
 
 ### 7. BKDR hash
 
+Хеш-функция, которая вычисляется итеративно и заканчивается когда достигает нулевого символа. Хеш умножается на число, заданное заранее по шаблону .31...31.. и прибавляется ASCII код текущего символа слова. 
+
 ```C++
 size_t GetBKDRHash( Elem_t elem )
 {
@@ -159,6 +163,8 @@ size_t GetBKDRHash( Elem_t elem )
 > Дисперсия = 5
 
 ### 8. CRC32 hash
+
+Хеш-функция, для дальнейшей оптимизации в виде векторных инструкций предоставленных AVX2 (_mm_crc32_u64).
 
 ```C++
 size_t GetCrc32Hash( Elem_t elem ) 

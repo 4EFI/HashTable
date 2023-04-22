@@ -110,14 +110,14 @@ size_t HashTablePushWord( HashTable* hash_table, Elem_t elem )
 
 size_t HashTableFindWord( HashTable* hash_table, Elem_t elem )
 {
-    size_t hash = hash_table->hash_function( elem );
-    size_t ind  = hash % hash_table->size;
+    size_t hash      = hash_table->hash_function( elem );
+    size_t curr_list = hash % hash_table->size;
 
-    size_t list_size = hash_table->arr[ind].size;
+    size_t list_size = hash_table->arr[curr_list].size;
 
     for( size_t i = 1; i <= list_size; i++ )
     {
-        if( !strcmp( hash_table->arr[ind].nodes[i].elem, elem) ) 
+        if( !strcmp( hash_table->arr[curr_list].nodes[i].elem, elem) ) 
         {
             return 1;
         }
