@@ -20,6 +20,8 @@
 
 ## Часть 1. Хеш-функции
 
+___
+
 ### 1. Const hash 
 
 В независимости от значения, возвращает константу (в нашем случае 1).
@@ -34,6 +36,8 @@ size_t GetConstHash( Elem_t elem )
 <p style="text-align: center"><img src=res/bar_const.png width="550px"/></p>
 
 > Дисперсия = 26362
+
+___
 
 ### 2. First ASCII hash
 
@@ -50,6 +54,8 @@ size_t GetFirstAsciiHash( Elem_t elem )
 
 > Дисперсия = 1102
 
+___
+
 ### 3. LenWord hash
 
 Возвращает длину слова.
@@ -64,6 +70,8 @@ size_t GetLenWordHash( Elem_t elem )
 <p style="text-align: center"><img src=res/bar_len_word.png width="550px"/></p>
 
 > Дисперсия = 3612
+
+___
 
 ### 4. Sum ASCII hash
 
@@ -89,6 +97,8 @@ size_t GetSumAsciiHash( Elem_t elem )
 
 > Дисперсия = 34
 
+___
+
 ### 5. ROL hash
 
 Хеш-функция, которая циклически сдвигает хеш влево (ROL) и выполняет "исключающее или" (XOR) к текущему элементу слова. Итератор увеличивается до тех пор, пока элемент не станет равным 0.
@@ -112,6 +122,8 @@ size_t GetRolHash( Elem_t elem )
 <p style="text-align: center"><img src=res/bar_rol.png width="550px"/></p>
 
 > Дисперсия = 8
+
+___
 
 ### 6. ROR hash
 
@@ -137,6 +149,8 @@ size_t GetRorHash( Elem_t elem )
 
 > Дисперсия = 7
 
+___
+
 ### 7. BKDR hash
 
 Хеш-функция, которая вычисляется итеративно и заканчивается когда достигает нулевого символа. Хеш умножается на число, заданное заранее по шаблону .31...31.. и прибавляется ASCII код текущего символа слова. 
@@ -161,6 +175,8 @@ size_t GetBKDRHash( Elem_t elem )
 <p style="text-align: center"><img src=res/bar_bkdr.png width="550px"/></p>
 
 > Дисперсия = 5
+
+___
 
 ### 8. CRC32 hash
 
@@ -191,3 +207,5 @@ size_t GetCrc32Hash( Elem_t elem )
 <p style="text-align: center"><img src=res/bar_crc32.png width="550px"/></p>
 
 > Дисперсия = 5
+
+___
