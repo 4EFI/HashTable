@@ -122,9 +122,10 @@ size_t HashTableFindWord( HashTable* hash_table, Elem_t elem )
 
     for( size_t i = 1; i <= list_size; i++ )
     {
-        Elem_t curr_elem = hash_table->arr[curr_list].nodes[i].elem;
-        
-        if( !strcmp( curr_elem, elem) ) return 1;
+        if( !strcmp( hash_table->arr[curr_list].nodes[i].elem, elem) ) 
+        {
+            return 1;
+        }
     }
     
     return 0;
