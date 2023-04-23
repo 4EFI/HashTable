@@ -24,6 +24,7 @@ size_t GetLenWordHash   ( Elem_t elem );
 size_t GetSumAsciiHash  ( Elem_t elem );
 size_t GetRolHash       ( Elem_t elem );
 size_t GetRorHash       ( Elem_t elem );
+size_t GetBKDRHash      ( Elem_t elem );
 size_t GetCrc32Hash     ( Elem_t elem );
 
 int HashTableCtor( HashTable* hash_table, int size );

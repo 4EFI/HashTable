@@ -150,7 +150,7 @@ size_t GetRorHash( Elem_t elem )
 
 <p style="text-align: center"><img src=res/bar_ror.png width="550px"/></p>
 
-> Дисперсия = 7
+> Дисперсия = 19
 
 ___
 

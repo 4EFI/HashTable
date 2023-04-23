@@ -246,14 +246,14 @@ size_t GetCrc32Hash( Elem_t elem )
 
 size_t ROL( size_t num, size_t shift )
 {
-    return ( num << shift ) | ( num >> ( sizeof( size_t ) - shift ) );
+    return ( num << shift ) | ( num >> ( 8 * sizeof( size_t ) - shift ) );
 }
 
 //-----------------------------------------------------------------------------
 
 size_t ROR( size_t num, size_t shift )
 {
-    return ( num >> shift ) | ( num << ( sizeof( size_t ) - shift ) );
+    return ( num >> shift ) | ( num << ( 8 * sizeof( size_t ) - shift ) );
 }
 
 //-----------------------------------------------------------------------------
