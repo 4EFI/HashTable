@@ -36,8 +36,9 @@ int HashTableMakeCSV( HashTable* hash_table, FILE* output_file );
 
 int HashTableSetHashFunction( HashTable* hash_table, size_t (*hash_function)( Elem_t ) );
 
-size_t HashTablePushWord( HashTable* hash_table, Elem_t elem );
-size_t HashTableFindWord( HashTable* hash_table, Elem_t elem );
+size_t HashTablePushWord   ( HashTable* hash_table, Elem_t elem );
+size_t HashTableFindWord   ( HashTable* hash_table, Elem_t elem );
+size_t HashTableFindWordAsm( HashTable* hash_table, Elem_t elem );
 
 size_t HashTableFindAllWords( HashTable* hash_table );
 

@@ -291,8 +291,6 @@ ___
 
 При данной оптимизации мы полностью перепишем функцию хеширования на ассемблере. 
 
-<summary>Ассемблерный код</summary>
-
 ```Asm
 GetBkdrHashAsm:     proc
                     
@@ -328,3 +326,55 @@ GetBkdrHashAsm:     proc
 <summary>Граф вызовов функций</summary>
 <p style="text-align: center"><img src=res/opt_graph_asm_func.png width="700px"/></p> 
 </details>
+
+### 2. Ассемблерная вставка
+
+Можем заметить, что вторая существенная зависимость - это функция сравнения строк "strcmp". Давайте попробуем заменить ее на ассемблерную версию, воспользовавшись ассемблерной вставкой. 
+
+```C++
+inline int StrCmp( const char* str_1, const char* str_2 )
+{
+    int res = 0;
+    asm
+    (
+        ".intel_syntax noprefix;"
+        ".loop:"
+            "mov r11b, [rsi];"
+            "mov r10b, [rdi];"
+    	    "cmp r10b, 0;"
+    	    "je .done;"
+    	    "cmp r11b, 0;"
+    	    "je .done;"
+    	    "cmp r11b, r10b;"
+    	    "jne .done;"
+    	    "inc rdi;"  
+    	    "inc rsi;"
+    	    "jmp .loop;"
+        ".done:"
+            "movzx rax, r10b;"
+            "movzx rbx, r11b;"
+    	    "sub   rax, rbx;"
+        ".att_syntax prefix;"
+        : "=a" ( res )
+    );
+    
+    return res;
+}
+```
+
+| Оптимизация  | Число машинных команд | Коэффициент ускорения | 
+|--------------|-----------------------|-----------------------|
+|    Нет       |      1 833 595        |          1.00         |
+|    -O2       |      1 090 918        |          1.68         |
+| asm function |      1 371 751        |          1.34         |
+| asm insert   |      2 186 136        |          0.83         |
+
+<details>
+<summary>Граф вызовов функций</summary>
+<p style="text-align: center"><img src=res/opt_graph_asm_insert.png width="700px"/></p> 
+</details>
+
+По итогу, вместо ускорения программы, мы получили ее замедление. Как оказалось, это связано с тем, что strcmp пользуется векторными инструкциями, как следствие, простой вставкой нам ускорить ничего не удалось.
+
+
+

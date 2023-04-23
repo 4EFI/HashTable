@@ -19,7 +19,7 @@ int main()
     HashTable hash_table = {};
     HashTableCtor( &hash_table, 1000 ); 
 
-    HashTableSetHashFunction( &hash_table, GetBkdrHashAsm );
+    HashTableSetHashFunction( &hash_table, GetBkdrHash );
 
     FILE* input_file = fopen( "res/hamlet.txt", "rb" );
     if(  !input_file ) { printf( "Error open file...\n" ); return -1; } 

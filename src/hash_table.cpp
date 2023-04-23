@@ -122,10 +122,61 @@ size_t HashTableFindWord( HashTable* hash_table, Elem_t elem )
 
     for( size_t i = 1; i <= list_size; i++ )
     {
-        if( !strcmp( hash_table->arr[curr_list].nodes[i].elem, elem) ) 
+        Elem_t curr_elem = hash_table->arr[curr_list].nodes[i].elem;
+
+        if( !strcmp( curr_elem, elem) ) 
         {
             return 1;       
         }
+    }
+    
+    return 0;
+}
+
+inline int StrCmp( const char* str_1, const char* str_2 )
+{
+    int res = 0;
+    asm
+    (
+        ".intel_syntax noprefix;"
+        ".loop:"
+            "mov r11b, [rsi];"
+            "mov r10b, [rdi];"
+    	    "cmp r10b, 0;"
+    	    "je .done;"
+    	    "cmp r11b, 0;"
+    	    "je .done;"
+    	    "cmp r11b, r10b;"
+    	    "jne .done;"
+    	    "inc rdi;"  
+    	    "inc rsi;"
+    	    "jmp .loop;"
+        ".done:"
+            "movzx rax, r10b;"
+            "movzx rbx, r11b;"
+    	    "sub   rax, rbx;"
+        ".att_syntax prefix;"
+        : "=a" ( res )
+    );
+    
+    return res;
+}
+
+size_t HashTableFindWordAsm( HashTable* hash_table, Elem_t elem )
+{
+    size_t hash      = hash_table->hash_function( elem );
+    size_t curr_list = hash % hash_table->size;
+
+    size_t list_size = hash_table->arr[curr_list].size;
+
+    for( size_t i = 1; i <= list_size; i++ )
+    {
+        Elem_t curr_elem = hash_table->arr[curr_list].nodes[i].elem;
+
+        if( !StrCmp( curr_elem, elem) ) 
+        {
+            return 1;       
+        }     
     }
     
     return 0;
@@ -144,7 +195,7 @@ size_t HashTableFindAllWords( HashTable* hash_table )
         {
             Elem_t curr_elem  = hash_table->arr[curr_list].nodes[i].elem;
 
-            HashTableFindWord( hash_table, curr_elem );
+            HashTableFindWordAsm( hash_table, curr_elem );
         }
     }
 
