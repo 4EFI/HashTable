@@ -293,6 +293,7 @@ ___
 
 <details>
 <summary>Ассемблерный код</summary>
+
 ```Asm
 GetBkdrHashAsm:     proc
                     
@@ -314,6 +315,7 @@ GetBkdrHashAsm:     proc
                     ret 
                     endp
 ```
+
 </details>
 
 После профилирования получаем следующий результат:
