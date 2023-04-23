@@ -14,15 +14,17 @@ with open( "res/output_" + post_file_name + ".csv", "r" ) as f:
 x = [i for i in range( len( data ) )]
 
 xmax = 1000
+ymax = 30
 
 print( np.var( data ) )
 
-plt.xlim  ( 0, xmax )
+plt.xlim  ( -5, xmax )
+plt.ylim  (  0, ymax )
 plt.xticks( [i for i in range( 0, xmax + 1, 100 )] )
 plt.xlabel( "Индекс списка" )
 plt.ylabel( "Количество элементов" )
 
-ax.bar( x, data )
+ax.bar( x, data, width = 1 )
 plt.grid()
 
 fig.savefig( "res/bar_" + post_file_name + ".png" )
