@@ -24,7 +24,7 @@ size_t GetLenWordHash   ( Elem_t elem );
 size_t GetSumAsciiHash  ( Elem_t elem );
 size_t GetRolHash       ( Elem_t elem );
 size_t GetRorHash       ( Elem_t elem );
-size_t GetBKDRHash      ( Elem_t elem );
+size_t GetBkdrHash      ( Elem_t elem );
 size_t GetCrc32Hash     ( Elem_t elem );
 
 int HashTableCtor( HashTable* hash_table, int size );
@@ -38,6 +38,8 @@ int HashTableSetHashFunction( HashTable* hash_table, size_t (*hash_function)( El
 
 size_t HashTablePushWord( HashTable* hash_table, Elem_t elem );
 size_t HashTableFindWord( HashTable* hash_table, Elem_t elem );
+
+size_t HashTableFindAllWords( HashTable* hash_table );
 
 //-----------------------------------------------------------------------------
 

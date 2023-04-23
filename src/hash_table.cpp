@@ -33,7 +33,12 @@ int HashTableCtor( HashTable* hash_table, int size )
 
 int HashTableDtor( HashTable* hash_table )
 {
-    hash_table->size = 0;
+    for( size_t i = 0; i < hash_table->size; i++ )
+    {
+        ListDtor( &hash_table->arr[i] );
+    }      
+
+    hash_table->size = 0;   
     free( hash_table->arr ); 
     hash_table->arr = NULL;
 
@@ -128,6 +133,30 @@ size_t HashTableFindWord( HashTable* hash_table, Elem_t elem )
 
 //-----------------------------------------------------------------------------
 
+//  This function searches all the words that are 
+//  in the table for counting the search time
+
+size_t HashTableFindAllWords( HashTable* hash_table )
+{
+    for( size_t curr_list = 0; curr_list < hash_table->size; curr_list++ )
+    {
+        for( int i = 1; i   <= hash_table->arr[curr_list].size; i++ )
+        {
+            Elem_t curr_elem = hash_table->arr[curr_list].nodes[i].elem;
+
+            HashTableFindWord( hash_table, curr_elem );
+        }
+    }
+
+    return 1;
+}
+
+//-----------------------------------------------------------------------------
+
+
+// Hash functions
+//-----------------------------------------------------------------------------
+
 #pragma GCC diagnostic ignored "-Wunused-parameter"
 
 size_t GetConstHash( Elem_t elem )
@@ -201,7 +230,7 @@ size_t GetRorHash( Elem_t elem )
 
 //-----------------------------------------------------------------------------
 
-size_t GetBKDRHash( Elem_t elem )
+size_t GetBkdrHash( Elem_t elem )
 {
    size_t seed = 31; /* 31 131 1313 13131 131313 etc.. */
    size_t hash = 0;
