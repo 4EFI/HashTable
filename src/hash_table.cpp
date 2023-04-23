@@ -140,9 +140,9 @@ size_t HashTableFindAllWords( HashTable* hash_table )
 {
     for( size_t curr_list = 0; curr_list < hash_table->size; curr_list++ )
     {
-        for( int i = 1; i   <= hash_table->arr[curr_list].size; i++ )
+        for( int i = 1;    i <= hash_table->arr[curr_list].size; i++ )
         {
-            Elem_t curr_elem = hash_table->arr[curr_list].nodes[i].elem;
+            Elem_t curr_elem  = hash_table->arr[curr_list].nodes[i].elem;
 
             HashTableFindWord( hash_table, curr_elem );
         }
