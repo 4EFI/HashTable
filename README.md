@@ -265,6 +265,8 @@ ___
 
 > Для кого, это что-то новое, советую посетить [сайтик](https://baptiste-wicht.com/posts/2011/09/profile-c-application-with-callgrind-kcachegrind.html) c документацией по установке и использованию. Краткое введение без замысловатых слов.  
 
+### 0. Предварительный анализ 
+
 Запуская профилирование без какой-либо оптимизации, получаем следующее:
 
 | Оптимизация | Число машинных команд | Коэффициент ускорения | 
@@ -283,4 +285,47 @@ ___
 <details>
 <summary>Граф вызовов функций</summary>
 <p style="text-align: center"><img src=res/opt_graph_O2.png width="700px"/></p> 
+</details>
+
+### 1. Хеш-функция на ассемблере
+
+При данной оптимизации мы полностью перепишем функцию хеширования на ассемблере. 
+
+<details>
+<summary>Ассемблерный код</summary>
+```Asm
+GetBkdrHashAsm:     proc
+                    
+                    mov rax, 0                  ; hash = 0    
+                    mov r8,  31                 ; seed = 31
+                    xor rcx, rcx
+
+                    .loop:
+                        mul r8
+                        
+                        mov cl, [rdi]           ; hash += *str_addr
+                        add rax, rcx          
+                        
+                        inc rdi                 ; str_addr++ 
+
+                        cmp byte [rdi], 0       ; if( *str_addr == '\0' ) break;   
+                        jne .loop                
+
+                    ret 
+                    endp
+```
+</details>
+
+После профилирования получаем следующий результат:
+
+| Оптимизация  | Число машинных команд | Коэффициент ускорения | 
+|--------------|-----------------------|-----------------------|
+|    Нет       |      1 833 595        |          1.00         |
+|    -O2       |      1 090 918        |          1.68         |
+| asm function |      1 371 751        |          1.34         |
+
+
+<details>
+<summary>Граф вызовов функций</summary>
+<p style="text-align: center"><img src=res/opt_graph_asm_func.png width="700px"/></p> 
 </details>

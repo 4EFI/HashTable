@@ -1,4 +1,6 @@
 
+#include "config.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <immintrin.h>
@@ -8,12 +10,16 @@
 
 //-----------------------------------------------------------------------------
 
+extern "C" size_t GetBkdrHashAsm( Elem_t elem );
+
+//-----------------------------------------------------------------------------
+
 int main()
 {    
     HashTable hash_table = {};
     HashTableCtor( &hash_table, 1000 ); 
 
-    HashTableSetHashFunction( &hash_table, GetBkdrHash );
+    HashTableSetHashFunction( &hash_table, GetBkdrHashAsm );
 
     FILE* input_file = fopen( "res/hamlet.txt", "rb" );
     if(  !input_file ) { printf( "Error open file...\n" ); return -1; } 

@@ -124,7 +124,7 @@ size_t HashTableFindWord( HashTable* hash_table, Elem_t elem )
     {
         if( !strcmp( hash_table->arr[curr_list].nodes[i].elem, elem) ) 
         {
-            return 1;
+            return 1;       
         }
     }
     
