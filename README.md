@@ -271,4 +271,4 @@ ___
 |-------------|-----------------------|-----------------------|
 |    Нет      |      1 833 595        |          1.0          |
 
-<p style="text-align: center"><img src=res/opt_graph_0.png width="450px"/></p>
+<p style="text-align: center"><img src=res/opt_graph_0.png width="650px"/></p>
