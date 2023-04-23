@@ -258,3 +258,7 @@ size_t HashTableFindWord( HashTable* hash_table, Elem_t elem )
     return 0;
 }
 ```
+
+Перейдем непосредственно к анализу. Для этого воспользуемся [valgrind](https://ru.wikipedia.org/wiki/Valgrind), а именно одним из его модулей - callgrind. Данный модуль предназначен для профилирования кода, предоставляет полноценный анализ всех функций, задействованных в программе. После его выполнения мы получаем файл callgrind.out.XXXXX. Данный файл сложно прочитать в текстовом режиме, поэтому воспользуемся [KCacheGrind](https://kcachegrind.sourceforge.net/html/Home.html) - средством, которое помогает визуализировать данный файл. 
+
+Для кого, это что-то новое, советую посетить [сайтик](https://baptiste-wicht.com/posts/2011/09/profile-c-application-with-callgrind-kcachegrind.html) c документацией по установке и использованию. Кратное введение без замысловатых слов.  
