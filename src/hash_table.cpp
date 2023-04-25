@@ -237,7 +237,7 @@ size_t HashTableFindAllWords( HashTable* hash_table )
         {
             Elem_t curr_elem = hash_table->arr[curr_list].nodes[i].elem;
 
-            HashTableFindWord( hash_table, curr_elem );
+            HashTableFindWordAVX( hash_table, curr_elem );
         }
     }
 
