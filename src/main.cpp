@@ -19,7 +19,7 @@ int main()
     HashTable hash_table = {};
     HashTableCtor( &hash_table, 1001 ); 
 
-    HashTableSetHashFunction( &hash_table, GetBkdrHash );
+    HashTableSetHashFunction( &hash_table, GetCrc32HashAVX );
 
     FILE* input_file = fopen( "res/hamlet_avx.txt", "rb" );
     if(  !input_file ) { printf( "Error open file...\n" ); return -1; } 
@@ -31,7 +31,7 @@ int main()
 
     HashTableFindAllWords( &hash_table );
 
-    FILE* output_file = fopen( "res/output_bkdr.csv", "w" );
+    FILE* output_file = fopen( "res/output_crc32_avx.csv", "w" );
     HashTableMakeCSV( &hash_table, output_file );
 
     HashTableDtor( &hash_table );

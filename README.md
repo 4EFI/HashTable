@@ -414,7 +414,7 @@ inline int StrCmp( const char* str_1, const char* str_2 )
 
 Для этого давайте немного обработаем наши данные. Так как мы хотим воспользоваться 256-битными векторами (*__m256i*), давайте разобьем наш текст на 32-байтные слова, дополняя их нулевыми символами. 
 
-> Сделаем это простеньким скриптиком на Python (./res/make_avx_text.py).
+> Сделаем это простеньким скриптиком на Python (./src/make_avx_text.py).
 
 <p style="text-align: center"><img src=res/text_avx.png width="700px"/></p> 
 
@@ -454,3 +454,32 @@ inline size_t StrCmpAVX( const char* str_1, const char* str_2 )
 
 ### 4. Я(_mm_crc32_u64) - скорость
 
+Хоть и официальный гайд по интрисикам закрыт (опустим причину), все же есть способы к нему обратиться - это [Mirror of Intel® Intrinsics Guide](https://www.laruence.com/sse/#expand=3340,3295,3421,3343,3320,3295,3296,789,3865,790,790,3865,3344,3301,3296,3344,3301,3344,1287). К чему я это? На данном сайте вы можете найти раздел криптографии с функциями хеширования. Хоть и выбор невелик, целая одна функция на момент создания проекта, так почему бы нам ей не воспользоваться.
+
+```C++
+size_t GetCrc32HashAVX( Elem_t elem )
+{
+    __m256i elem_vec = _mm256_load_si256( (__m256i*)elem );
+
+    size_t hash = 0;
+    hash = _mm_crc32_u64( hash, _mm256_extract_epi64( elem_vec, 3 ) );
+    hash = _mm_crc32_u64( hash, _mm256_extract_epi64( elem_vec, 2 ) );
+    hash = _mm_crc32_u64( hash, _mm256_extract_epi64( elem_vec, 1 ) );
+    hash = _mm_crc32_u64( hash, _mm256_extract_epi64( elem_vec, 0 ) );
+    
+    return hash;
+}
+```
+
+После запуска callgrind получаем следующее.
+
+| Оптимизация  | Число машинных команд | Коэффициент ускорения | 
+|--------------|-----------------------|-----------------------|
+|    Нет       |      1 833 595        |          1.00         |
+|    -O2       |      1 090 918        |          1.68         |
+| crc32 avx    |        843 968        |          2.17         |
+
+<details>
+<summary>Граф вызовов функций</summary>
+<p style="text-align: center"><img src=res/opt_graph_crc32.png width="700px"/></p> 
+</details>

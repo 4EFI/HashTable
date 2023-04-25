@@ -4,7 +4,7 @@ import numpy as np
 fig = plt.figure( figsize = (6, 4) )
 ax = fig.add_subplot()
 
-post_file_name = "bkdr"
+post_file_name = "crc32_avx"
 
 data = []
 

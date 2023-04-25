@@ -237,7 +237,7 @@ size_t HashTableFindAllWords( HashTable* hash_table )
         {
             Elem_t curr_elem = hash_table->arr[curr_list].nodes[i].elem;
 
-            HashTableFindWordAVX( hash_table, curr_elem );
+            HashTableFindWord( hash_table, curr_elem );
         }
     }
 
@@ -358,6 +358,21 @@ size_t GetCrc32Hash( Elem_t elem )
         }
     }
     return ~crc;
+}
+
+//-----------------------------------------------------------------------------
+
+size_t GetCrc32HashAVX( Elem_t elem )
+{
+    __m256i elem_vec = _mm256_load_si256( (__m256i*)elem );
+
+    size_t hash = 0;
+    hash = _mm_crc32_u64( hash, _mm256_extract_epi64( elem_vec, 3 ) );
+    hash = _mm_crc32_u64( hash, _mm256_extract_epi64( elem_vec, 2 ) );
+    hash = _mm_crc32_u64( hash, _mm256_extract_epi64( elem_vec, 1 ) );
+    hash = _mm_crc32_u64( hash, _mm256_extract_epi64( elem_vec, 0 ) );
+    
+    return hash;
 }
 
 //-----------------------------------------------------------------------------

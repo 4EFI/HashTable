@@ -26,6 +26,7 @@ size_t GetRolHash       ( Elem_t elem );
 size_t GetRorHash       ( Elem_t elem );
 size_t GetBkdrHash      ( Elem_t elem );
 size_t GetCrc32Hash     ( Elem_t elem );
+size_t GetCrc32HashAVX  ( Elem_t elem );
 
 int HashTableCtor( HashTable* hash_table, int size );
 int HashTableDtor( HashTable* hash_table );
