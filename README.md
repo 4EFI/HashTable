@@ -124,6 +124,23 @@ size_t GetRolHash( Elem_t elem )
 }
 ```
 
+<details>
+<summary>ROL функция</summary>
+
+```C++
+size_t ROL( size_t num, size_t shift )
+{
+    return ( num << shift ) | ( num >> ( 8 * sizeof( size_t ) - shift ) );
+}
+```
+
+Также, стоит отметить, что данная функция циклического сдвига оптимизируется компилятором (-O3) в одну ассемблерную команду (rol). 
+
+<p style="text-align: center"><img src=res/ROL_cpp.png width="550px"/></p>
+<p style="text-align: center"><img src=res/ROL_asm.png width="550px"/></p>
+
+</details>
+
 <p style="text-align: center"><img src=res/bar_rol.png width="550px"/></p>
 
 > Дисперсия = 8
@@ -149,6 +166,20 @@ size_t GetRorHash( Elem_t elem )
     return hash;
 }
 ```
+
+<details>
+<summary>ROR функция</summary>
+
+```C++
+size_t ROR( size_t num, size_t shift )
+{
+    return ( num >> shift ) | ( num << ( 8 * sizeof( size_t ) - shift ) );
+}
+```
+
+Как и ROL, ROR функция оптимизируется компилятором до одной ассемблерной команды (ror). Убедиться в этом остается читателю в виде упражнения.   
+
+</details>
 
 <p style="text-align: center"><img src=res/bar_ror.png width="550px"/></p>
 
