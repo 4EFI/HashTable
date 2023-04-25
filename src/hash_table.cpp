@@ -6,6 +6,7 @@
 #include <string.h>
 #include <assert.h>
 #include <sys/stat.h>
+#include <immintrin.h>
 
 #include "hash_table.hpp"
 #include "list.h"
@@ -52,7 +53,7 @@ int HashTableLoadText( HashTable* hash_table, const char* text )
     while( true )
     {
         char skip[256] = "";
-        char* word = ( char* )calloc( 256, sizeof( char ) );
+        char* word = ( char* )calloc( 32, sizeof( char ) );
 
         // skip not letter
         int num_skip = 0;
@@ -67,10 +68,22 @@ int HashTableLoadText( HashTable* hash_table, const char* text )
         if( num_read == 0 ) return 1;
 
         text += num_read;
-        if( !HashTableFindWord( hash_table, word ) )
-        {
-            HashTablePushWord( hash_table, word );
-        }
+        
+        HashTablePushWord( hash_table, word );
+    }
+    
+    return 1;
+}
+
+int HashTableLoadTextAVX( HashTable* hash_table, const char* text )
+{
+    while( true )
+    {
+        if( *text == '\0' ) break;
+
+        HashTablePushWordAVX( hash_table, ( char* )text );
+
+        text += 32;
     }
     
     return 1;
@@ -101,6 +114,22 @@ int HashTableSetHashFunction( HashTable* hash_table, size_t (*hash_function)( El
 
 size_t HashTablePushWord( HashTable* hash_table, Elem_t elem )
 {
+    if( HashTableFindWord( hash_table, elem ) ) return -1;
+    
+    size_t hash = hash_table->hash_function( elem );
+    size_t size = hash_table->size;
+
+    size_t i = hash % size;
+
+    ListPushBack( &hash_table->arr[ i ], elem );
+
+    return i;
+}
+
+size_t HashTablePushWordAVX( HashTable* hash_table, Elem_t elem )
+{
+    if( HashTableFindWordAVX( hash_table, elem ) ) return -1;
+    
     size_t hash = hash_table->hash_function( elem );
     size_t size = hash_table->size;
 
@@ -133,10 +162,10 @@ size_t HashTableFindWord( HashTable* hash_table, Elem_t elem )
     return 0;
 }
 
-inline int StrCmp( const char* str_1, const char* str_2 )
+inline int StrCmpAsm( const char* str_1, const char* str_2 )
 {
     int res = 0;
-    asm
+    asm \
     (
         ".intel_syntax noprefix;"
         ".loop:"
@@ -151,10 +180,12 @@ inline int StrCmp( const char* str_1, const char* str_2 )
     	    "inc rdi;"  
     	    "inc rsi;"
     	    "jmp .loop;"
+        
         ".done:"
-            "movzx rax, r10b;"
-            "movzx rbx, r11b;"
-    	    "sub   rax, rbx;"
+        "movzx rax, r10b;"
+        "movzx rbx, r11b;"
+    	"sub   rax, rbx;"
+        
         ".att_syntax prefix;"
         : "=a" ( res )
     );
@@ -162,7 +193,18 @@ inline int StrCmp( const char* str_1, const char* str_2 )
     return res;
 }
 
-size_t HashTableFindWordAsm( HashTable* hash_table, Elem_t elem )
+inline size_t StrCmpAVX( const char* str_1, const char* str_2 )
+{
+    __m256i str_1_vec = _mm256_load_si256( ( __m256i* )str_1 );
+    __m256i str_2_vec = _mm256_load_si256( ( __m256i* )str_2 );
+    __m256i cmp       = _mm256_cmpeq_epi8( str_1_vec, str_2_vec );
+
+    int mask = _mm256_movemask_epi8( cmp );
+    if( mask == 0xffffffff ) return 0;
+    else                     return 1;
+}
+
+size_t HashTableFindWordAVX( HashTable* hash_table, Elem_t elem )
 {
     size_t hash      = hash_table->hash_function( elem );
     size_t curr_list = hash % hash_table->size;
@@ -173,7 +215,7 @@ size_t HashTableFindWordAsm( HashTable* hash_table, Elem_t elem )
     {
         Elem_t curr_elem = hash_table->arr[curr_list].nodes[i].elem;
 
-        if( !StrCmp( curr_elem, elem) ) 
+        if( !StrCmpAVX( curr_elem, elem) ) 
         {
             return 1;       
         }     
@@ -191,11 +233,11 @@ size_t HashTableFindAllWords( HashTable* hash_table )
 {
     for( size_t curr_list = 0; curr_list < hash_table->size; curr_list++ )
     {
-        for( int i = 1;    i <= hash_table->arr[curr_list].size; i++ )
+        for( int i = 1;   i <= hash_table->arr[curr_list].size; i++ )
         {
-            Elem_t curr_elem  = hash_table->arr[curr_list].nodes[i].elem;
+            Elem_t curr_elem = hash_table->arr[curr_list].nodes[i].elem;
 
-            HashTableFindWordAsm( hash_table, curr_elem );
+            HashTableFindWordAVX( hash_table, curr_elem );
         }
     }
 
@@ -368,16 +410,16 @@ long int ReadAllFile( FILE* file, char** str )
 
     long int fileSize = GetFileSizeFromStat( file );
     
-    *str = ( char* )calloc( sizeof( char ), fileSize + 1 );
+    *str = ( char* )aligned_alloc( 32, sizeof( char ) * (fileSize + 1) );
 
     long int rightRead = fread( *str, sizeof( char ), fileSize, file );
 
-#pragma GCC diagnostic ignored "-Wunused-result"
+    #pragma GCC diagnostic ignored "-Wunused-result"
 
     if( rightRead < fileSize )
         realloc( str, sizeof( char ) * ( rightRead + 1 ) ); // Windows specific, \r remove
 
-#pragma GCC diagnostic ignored "-Wunused-result"
+    #pragma GCC diagnostic ignored "-Wunused-result"
 
     (*str)[rightRead] = '\0';
 

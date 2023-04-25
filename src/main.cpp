@@ -17,17 +17,17 @@ extern "C" size_t GetBkdrHashAsm( Elem_t elem );
 int main()
 {    
     HashTable hash_table = {};
-    HashTableCtor( &hash_table, 1000 ); 
+    HashTableCtor( &hash_table, 1001 ); 
 
     HashTableSetHashFunction( &hash_table, GetBkdrHash );
 
-    FILE* input_file = fopen( "res/hamlet.txt", "rb" );
+    FILE* input_file = fopen( "res/hamlet_avx.txt", "rb" );
     if(  !input_file ) { printf( "Error open file...\n" ); return -1; } 
     
     char* text = NULL;
     ReadAllFile( input_file, &text );
 
-    HashTableLoadText( &hash_table, text );
+    HashTableLoadTextAVX( &hash_table, text );
 
     HashTableFindAllWords( &hash_table );
 
