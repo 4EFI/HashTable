@@ -17,7 +17,7 @@ def DrawBar( file_name, x_size, y_size ):
 
     plt.xlim  ( -5, x_size )
     plt.ylim  (  0, y_size )
-    plt.xticks( [i for i in range( 0, x_size + 1, 100 )] )
+    #plt.xticks( [i for i in range( 0, x_size + 1, 100 )] )
     plt.xlabel( "Индекс списка" )
     plt.ylabel( "Количество элементов" )
 
