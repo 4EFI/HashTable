@@ -28,6 +28,29 @@ size_t GetBkdrHash      ( Elem_t elem );
 size_t GetCrc32Hash     ( Elem_t elem );
 size_t GetCrc32HashAVX  ( Elem_t elem );
 
+struct HashFunction
+{
+    size_t (*function)( Elem_t );
+    
+    const char* name_output_file;
+};
+
+const HashFunction HashFunctions[] = 
+{
+    { GetConstHash,      "res/output_const.csv" },
+    { GetFirstAsciiHash, "res/output_first_ascii.csv" },
+    { GetLenWordHash,    "res/output_len_word.csv" },
+    { GetSumAsciiHash,   "res/output_sum_ascii.csv" },
+    { GetRolHash,        "res/output_rol.csv" },
+    { GetRorHash,        "res/output_ror.csv" },
+    { GetBkdrHash,       "res/output_bkdr.csv" },
+    { GetCrc32Hash,      "res/output_crc32.csv" }
+};
+
+const int NumHashFunctions = sizeof( HashFunctions ) / sizeof( HashFunction ); 
+
+//-----------------------------------------------------------------------------
+
 int HashTableCtor( HashTable* hash_table, int size );
 int HashTableDtor( HashTable* hash_table );
 

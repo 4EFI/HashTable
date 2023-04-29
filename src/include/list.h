@@ -5,8 +5,6 @@
 
 //-----------------------------------------------------------------------------
 
-static const int MaxStrLen = 255;
-
 static const Elem_t ListPoison = NULL;
 
 extern const char* FileListDumpName;
