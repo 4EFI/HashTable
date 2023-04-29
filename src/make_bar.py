@@ -31,7 +31,7 @@ y_size = 30
 
 file_names = [ "const", "first_ascii", "len_word", "sum_ascii", "sum_ascii_5000", "rol",  "ror",  "bkdr", "crc32" ]
 x_sizes    = [ 200,     200,           200,        x_size,      5000,             x_size, x_size, x_size, x_size    ]
-y_sizes    = [ 6000,    1000,          1000,       y_size,      y_size,           y_size, y_size, y_size, y_size    ]
+y_sizes    = [ 6000,    1000,          1000,       y_size,      y_size,           y_size, 115,    y_size, y_size    ]
 
 for i in range( len( file_names ) ):
     DrawBar( file_names[i], x_sizes[i], y_sizes[i] )
