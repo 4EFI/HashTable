@@ -13,14 +13,16 @@
 
 //-----------------------------------------------------------------------------
 
-int HashTableCtor( HashTable* hash_table, int size )
+int HashTableCtor( HashTable* hash_table, int size, size_t (*hash_function)( Elem_t ) )
 {
+    if( !hash_table ) return 0; 
+
     if( size <= 0 ) size = 1;
 
+    hash_table->hash_function = hash_function;
+    
     hash_table->size = size;
     hash_table->arr  = ( List* )calloc( size, sizeof( List ) );
-
-    if( !hash_table ) return 0; 
   
     for( int i = 0; i < size; i++ )
     {
@@ -98,15 +100,6 @@ int HashTableMakeCSV( HashTable* hash_table, FILE* output_file )
         fprintf( output_file, "%d ", hash_table->arr[i].size );
     }
     
-    return 1;
-}
-
-//-----------------------------------------------------------------------------
-
-int HashTableSetHashFunction( HashTable* hash_table, size_t (*hash_function)( Elem_t ) )
-{
-    hash_table->hash_function = hash_function;
-
     return 1;
 }
 

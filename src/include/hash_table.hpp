@@ -33,33 +33,36 @@ struct HashFunction
     size_t (*function)( Elem_t );
     
     const char* name_output_file;
+
+    int hash_table_size;
 };
+
+const int HashTableSize = 1001;
 
 const HashFunction HashFunctions[] = 
 {
-    { GetConstHash,      "res/output_const.csv" },
-    { GetFirstAsciiHash, "res/output_first_ascii.csv" },
-    { GetLenWordHash,    "res/output_len_word.csv" },
-    { GetSumAsciiHash,   "res/output_sum_ascii.csv" },
-    { GetRolHash,        "res/output_rol.csv" },
-    { GetRorHash,        "res/output_ror.csv" },
-    { GetBkdrHash,       "res/output_bkdr.csv" },
-    { GetCrc32Hash,      "res/output_crc32.csv" }
+    { GetConstHash,      "res/output_const.csv",            HashTableSize },
+    { GetFirstAsciiHash, "res/output_first_ascii.csv",      HashTableSize },
+    { GetLenWordHash,    "res/output_len_word.csv",         HashTableSize },
+    { GetSumAsciiHash,   "res/output_sum_ascii.csv",        HashTableSize },
+    { GetSumAsciiHash,   "res/output_sum_ascii_5000.csv",   5000 },
+    { GetRolHash,        "res/output_rol.csv",              HashTableSize },
+    { GetRorHash,        "res/output_ror.csv",              HashTableSize },
+    { GetBkdrHash,       "res/output_bkdr.csv",             HashTableSize },
+    { GetCrc32Hash,      "res/output_crc32.csv",            HashTableSize }
 };
 
 const int NumHashFunctions = sizeof( HashFunctions ) / sizeof( HashFunction ); 
 
 //-----------------------------------------------------------------------------
 
-int HashTableCtor( HashTable* hash_table, int size );
+int HashTableCtor( HashTable* hash_table, int size, size_t (*hash_function)( Elem_t ) );
 int HashTableDtor( HashTable* hash_table );
 
 int HashTableLoadText   ( HashTable* hash_table, const char* text );
 int HashTableLoadTextAVX( HashTable* hash_table, const char* text );
 
 int HashTableMakeCSV( HashTable* hash_table, FILE* output_file );
-
-int HashTableSetHashFunction( HashTable* hash_table, size_t (*hash_function)( Elem_t ) );
 
 size_t HashTablePushWord   ( HashTable* hash_table, Elem_t elem );
 size_t HashTableFindWord   ( HashTable* hash_table, Elem_t elem );
