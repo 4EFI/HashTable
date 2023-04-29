@@ -48,7 +48,7 @@ int MakeAllHashFunctionsCSV( const HashFunction* hash_functions, int size, const
         HashTableCtor( &hash_table, 
                         hash_functions[i].hash_table_size, 
                         hash_functions[i].function ); 
-
+        
         HashTableLoadTextAVX( &hash_table, text );
 
         FILE* output_file = fopen( hash_functions[i].name_output_file, "w" );

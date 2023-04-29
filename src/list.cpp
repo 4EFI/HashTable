@@ -440,15 +440,16 @@ int ListLogicalPosToPhysical( List* list, int desiredLogicalPos )
 
 //-----------------------------------------------------------------------------
 
-int ListFindElemByValue( List* list, Elem_t value )
+int ListFindElemByValue( List* list, Elem_t value, int ( *cmp_function )( Elem_t elem_1, Elem_t elem_2 ) )
 {
     if( list == NULL ) return 0;
 
-    int curPos = ListHead( list );
+    int  curPos = ListHead( list );
+    if( !curPos ) return 0;
 
     while( true )
-    {
-        if( list->nodes[curPos].elem == value ) return curPos;
+    {        
+        if( !cmp_function( list->nodes[curPos].elem, value ) ) return curPos;
         
         if( curPos == ListTail( list ) ) return 0;
 

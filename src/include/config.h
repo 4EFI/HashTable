@@ -5,7 +5,7 @@
 
 const int MaxStrLen = 256;
 
-typedef char* Elem_t;
+typedef const char* Elem_t;
 
 //-----------------------------------------------------------------------------
 

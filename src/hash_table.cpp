@@ -140,18 +140,9 @@ size_t HashTableFindWord( HashTable* hash_table, Elem_t elem )
     size_t hash      = hash_table->hash_function( elem );
     size_t curr_list = hash % hash_table->size;
 
-    size_t list_size = hash_table->arr[curr_list].size;
+    int elem_pos = ListFindElemByValue( &hash_table->arr[curr_list], elem, strcmp );
+    if( elem_pos ) return 1;
 
-    for( size_t i = 1; i <= list_size; i++ )
-    {
-        Elem_t curr_elem = hash_table->arr[curr_list].nodes[i].elem;
-
-        if( !strcmp( curr_elem, elem) ) 
-        {
-            return 1;       
-        }
-    }
-    
     return 0;
 }
 
@@ -186,11 +177,12 @@ inline int StrCmpAsm( const char* str_1, const char* str_2 )
     return res;
 }
 
-inline size_t StrCmpAVX( const char* str_1, const char* str_2 )
+inline int StrCmpAVX( const char* str_1, const char* str_2 )
 {
     __m256i str_1_vec = _mm256_load_si256( ( __m256i* )str_1 );
     __m256i str_2_vec = _mm256_load_si256( ( __m256i* )str_2 );
     __m256i cmp       = _mm256_cmpeq_epi8( str_1_vec, str_2_vec );
+
 
     int mask = _mm256_movemask_epi8( cmp );
     if( mask == 0xffffffff ) return 0;
@@ -202,17 +194,8 @@ size_t HashTableFindWordAVX( HashTable* hash_table, Elem_t elem )
     size_t hash      = hash_table->hash_function( elem );
     size_t curr_list = hash % hash_table->size;
 
-    size_t list_size = hash_table->arr[curr_list].size;
-
-    for( size_t i = 1; i <= list_size; i++ )
-    {
-        Elem_t curr_elem = hash_table->arr[curr_list].nodes[i].elem;
-
-        if( !StrCmpAVX( curr_elem, elem) ) 
-        {
-            return 1;       
-        }     
-    }
+    int elem_pos = ListFindElemByValue( &hash_table->arr[curr_list], elem, StrCmpAVX );
+    if( elem_pos ) return 1;
     
     return 0;
 }

@@ -66,7 +66,7 @@ int ListInsert( List* list, int pos, Elem_t val );
 Elem_t ListRemove( List* list, int pos );
 
 int ListLogicalPosToPhysical( List* list, int    desiredLogicalPos );
-int ListFindElemByValue     ( List* list, Elem_t value );
+int ListFindElemByValue     ( List* list, Elem_t value, int ( *cmp_function )( Elem_t elem_1, Elem_t elem_2 ) );
 
 int ListLinearize( List* list );
 
