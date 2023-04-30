@@ -177,7 +177,7 @@ inline int StrCmpAsm( const char* str_1, const char* str_2 )
     return res;
 }
 
-inline int StrCmpAVX( const char* str_1, const char* str_2 )
+__always_inline int StrCmpAVX( const char* str_1, const char* str_2 )
 {
     __m256i str_1_vec = _mm256_load_si256( ( __m256i* )str_1 );
     __m256i str_2_vec = _mm256_load_si256( ( __m256i* )str_2 );

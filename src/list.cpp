@@ -7,6 +7,8 @@
 
 #include "list.h" 
 
+int StrCmpAVX( const char* str_1, const char* str_2 );
+
 //-----------------------------------------------------------------------------
 
 const char* FileListDumpName = "list_dump.html";
@@ -449,7 +451,7 @@ int ListFindElemByValue( List* list, Elem_t value, int ( *cmp_function )( Elem_t
 
     while( true )
     {        
-        if( !cmp_function( list->nodes[curPos].elem, value ) ) return curPos;
+        if( !StrCmpAVX( list->nodes[curPos].elem, value ) ) return curPos;
         
         if( curPos == ListTail( list ) ) return 0;
 
